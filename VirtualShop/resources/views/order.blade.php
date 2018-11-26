@@ -55,6 +55,11 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if ($orders == '[]')
+								<tr>
+									<p>No order found for that id</p>
+								</tr>
+							@else
 							@foreach($orders as $order)
 								<tr class="rem1">
 								<td class="invert">
@@ -77,6 +82,7 @@
 								</td>
 								</tr>
 							@endforeach
+							@endif
 						</tbody>
 					</table>
 				</div>
