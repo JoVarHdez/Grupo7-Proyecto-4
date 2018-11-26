@@ -57,7 +57,7 @@
 						<tbody>
 							@if ($orders == '[]')
 								<tr>
-									<p>No order found for that id</p>
+									<p class="alert alert-danger" role="alert">No order found for that id</p>
 								</tr>
 							@else
 							@foreach($orders as $order)
