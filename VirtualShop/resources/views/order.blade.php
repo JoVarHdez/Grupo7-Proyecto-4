@@ -40,8 +40,8 @@
 				</h4>
 				<form class="form-inline" action="/order" method="post">
 								{{ csrf_field() }}
-									<input value="" name="orderId" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" >
-									<button style="width: 100px;" class="btn my-2 my-sm-0" type="submit">Search</button>
+									<input value="" name="orderId" id="orderId" class="form-control mr-sm-2 orderId" type="search" placeholder="Search" aria-label="Search" >
+									<button style="width: 100px;" class="btn my-2 my-sm-0" type="submit" id="Search_Orders">Search</button>
 							</form>
 
 				<div class="table-responsive">
@@ -65,7 +65,7 @@
 								<td class="invert">
                                     {{$order -> idOrder}}
 								</td>
-                                <td class="invert">{{$order -> created_at}}</td>
+                                <td class="invert" id="order_{{$order->idOrder}}">{{$order -> created_at}}</td>
                                 <td class="invert">
                                     <ul>
                                         @foreach($order -> products as $product)
