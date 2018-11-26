@@ -111,8 +111,8 @@ class ShoppingHistoryTest extends DuskTestCase
             $this->browse(function ($browser) use ($user, $order, $url){
                 $browser->loginAs($user->idUser)
                         ->visit($url)
-                        ->type('search', $order->idOrder)
-                        ->press('Search')
+                        ->type('orderId', $order->idOrder)
+                        ->press('#Search_Orders')
                         ->assertSee($order -> total);
             });
 
@@ -147,7 +147,17 @@ class ShoppingHistoryTest extends DuskTestCase
                 'image_path' => '1540180603.jpg',
                 'active' => 1,
             ]);
+            $product2 = Product::create([
+                'name' => 'Hoodie Naruto white',
+                'description' => 'Hoodie Naruto',
+                'price' => 3000,
+                'amount' => 40,
+                'image_path' => '1540180603.jpg',
+                'active' => 1,
+            ]);
+
             Product::find($product->idProduct)->categories()->attach($category->idCategory);
+            Product::find($product2->idProduct)->categories()->attach($category->idCategory);
             
             $order = Order::create([
                 'idUser' => $user -> idUser,
@@ -160,11 +170,11 @@ class ShoppingHistoryTest extends DuskTestCase
 
             $order2 = Order::create([
                 'idUser' => $user -> idUser,
-                'total' =>  $product -> price
+                'total' =>  $product2 -> price
             ]);
 
             Order::find($order2->idOrder)->products()
-                            ->attach($product ->idProduct, 
+                            ->attach($product2 ->idProduct, 
                             ["productQuantity" => 1]);
 
             $url = '/order/'.$user->idUser;
@@ -172,15 +182,11 @@ class ShoppingHistoryTest extends DuskTestCase
             $this->browse(function ($browser) use ($user, $order, $order2, $url){
                 $browser->loginAs($user->idUser)
                         ->visit($url)
-                        ->type('search', $order->idOrder)
-                        ->press('Search')
-                        ->assertSee($order -> idOrder)
-                        ->assertDontSee($order2 -> idOrder);
+                        ->type('orderId', $order->idOrder)
+                        ->press('#Search_Orders')
+                        ->assertSee($order -> total)
+                        ->assertDontSee($order2 -> total);
             });
-
-            $this->assertDatabaseHas('orders', [
-                'idOrder' => $order->idOrder,
-            ]);
         }
 
         public function testSearchOrder_OrderDoesntExists_ReturnSearchedOrderInView()
@@ -225,8 +231,8 @@ class ShoppingHistoryTest extends DuskTestCase
             $this->browse(function ($browser) use ($user, $order, $url){
                 $browser->loginAs($user->idUser)
                         ->visit($url)
-                        ->type('search', 100)
-                        ->press('Search')
+                        ->type('orderId', 100)
+                        ->press('#Search_Orders')
                         ->assertDontSee($order -> total);
             });
         }
@@ -273,7 +279,7 @@ class ShoppingHistoryTest extends DuskTestCase
             $this->browse(function ($browser) use ($user, $order, $url){
                 $browser->loginAs($user->idUser)
                         ->visit($url)
-                        ->press('Search')
+                        ->press('#Search_Orders')
                         ->assertSee('The order id field is required.');
             });
         }
