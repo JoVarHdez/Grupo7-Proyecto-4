@@ -126,7 +126,7 @@ class RateTest extends TestCase
 
     public function testRateOrder_MultiplePrductsRated_ReturningSecondProduct()
     {
-    	$ratingSQL = DB::select('Select AVG(r.rate) as Rating FROM rates r GROUP by r.idProduct Order by rating DESC;')[0]->rating;
+    	$ratingSQL = DB::select('Select AVG(r.rate) as Rating FROM rates r GROUP by r.idProduct Order by rating DESC;')[0]->Rating;
         $this->assertEquals($ratingSQL,5.0000);
     }
 }
